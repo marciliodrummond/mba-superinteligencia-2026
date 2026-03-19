@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MBA Super Inteligênc[IA] — Aula Inaugural Turma 2</title>
+<meta name="description" content="MBA em Inteligência Artificial, Gestão Estratégica e Serviços Jurídicos de Alta Performance — Aula Inaugural Turma 2"/>
+<meta name="author" content="Super Inteligênc[IA] — Marcílio Drummond"/>
+<meta name="theme-color" content="#030409"/>
+<meta property="og:title" content="MBA Super Inteligênc[IA] — Aula Inaugural Turma 2"/>
+<meta property="og:description" content="MBA em IA, Gestão Estratégica e Serviços Jurídicos de Alta Performance. Mapa Mental Interativo."/>
+<meta property="og:image" content="og-image.png"/>
+<meta property="og:image:width" content="1200"/>
+<meta property="og:image:height" content="630"/>
+<meta property="og:type" content="website"/>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png"/>
+<link rel="icon" type="image/png" sizes="64x64" href="favicon.png"/>
+<link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png"/>
+<link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+:root{--bg-page:#030409;--bg-surface:#0a0c12;--bg-raised:#12141c;--bg-card:rgba(14,16,23,0.6);--bg-elevated:#1a1c26;--bg-accent:#e2c074;--bg-accent-subtle:rgba(226,192,116,0.08);--fg-primary:#edeef2;--fg-secondary:#8c90a0;--fg-muted:#555869;--fg-accent:#e2c074;--border-line:rgba(255,255,255,0.06);--border-accent:rgba(226,192,116,0.15);--font-display:'Sora',sans-serif;--font-sans:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace}
+[data-theme="light"]{--bg-page:#fafaf7;--bg-surface:#f2f1ec;--bg-raised:#fff;--bg-card:rgba(255,255,255,0.7);--bg-elevated:#fff;--fg-primary:#1a1a1a;--fg-secondary:#6b6b6b;--fg-muted:#999;--fg-accent:#96692c;--border-line:rgba(0,0,0,0.07);--border-accent:rgba(150,105,44,0.2);--bg-accent-subtle:rgba(150,105,44,0.06)}
+*{margin:0;padding:0;box-sizing:border-box}html,body{height:100%}body{background:var(--bg-page);color:var(--fg-primary);font-family:var(--font-sans)}#root{min-height:100%}
+::selection{background:rgba(226,192,116,0.25)}::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--fg-muted);border-radius:3px}::-webkit-scrollbar-track{background:transparent}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes orbFloat{0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(15px,-20px)scale(1.03)}66%{transform:translate(-10px,10px)scale(0.97)}}
+button{font-family:inherit}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useMemo,useCallback,useEffect,Fragment}=React;
+
+/* ─── SVG Icon System ─── */
+const svgPaths={
+"chevron-down":"M6 9l6 6 6-6",
+"search":"M11 11m-8 0a8 8 0 1 0 16 0a8 8 0 1 0-16 0M21 21l-4.35-4.35",
+"sun":"M12 12m-5 0a5 5 0 1 0 10 0a5 5 0 1 0-10 0M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42",
+"moon":"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z",
+"x":"M18 6L6 18M6 6l12 12",
+"graduation-cap":"M22 10v6M2 10l10-5 10 5-10 5z M6 12v5c0 0 3 3 6 3s6-3 6-3v-5",
+"rocket":"M4.5 16.5c-1.5 1.93-2.03 5.5-2.03 5.5s3.57-.53 5.5-2.03a2.18 2.18 0 0 0-3.47-3.47 M15 2s0 0 0 0a21.18 21.18 0 0 1-1 13l-5 2-2-5 2-5A21.18 21.18 0 0 1 22 6s0 0 0 0l-7-4z M14.5 9.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2",
+"brain":"M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z M12 5v13",
+"target":"M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M12 12m-6 0a6 6 0 1 0 12 0 6 6 0 1 0-12 0M12 12m-10 0a10 10 0 1 0 20 0 10 10 0 1 0-20 0",
+"trending-up":"M22 7l-8.5 8.5-5-5L2 17",
+"users":"M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2 M23 21v-2a4 4 0 0 0-3-3.87 M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8z M16 3.13a4 4 0 0 1 0 7.75",
+"zap":"M13 2L3 14h9l-1 8 10-12h-9l1-8z",
+"monitor":"M2 3h20v14H2z M8 21h8 M12 17v4",
+"globe":"M12 12m-10 0a10 10 0 1 0 20 0 10 10 0 1 0-20 0M2 12h20 M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z",
+"shield":"M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
+"star":"M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z",
+"lightbulb":"M9 18h6 M10 22h4 M12 2v1 M4.22 4.22l.71.71 M1 12h2 M20.07 4.93l-.71.71 M23 12h-2 M15 9a3 3 0 1 1-6 0 5 5 0 0 1 6 0z M9 18a5 5 0 0 1-2-4 5 5 0 0 1 10 0 5 5 0 0 1-2 4",
+"clock":"M12 12m-10 0a10 10 0 1 0 20 0 10 10 0 1 0-20 0M12 6v6l4 2",
+"calendar":"M16 2v4M8 2v4M3 10h18M3 6h18v14H3z",
+"check-circle":"M22 11.08V12a10 10 0 1 1-5.93-9.14 M22 4L12 14.01l-3-3",
+"arrow-right":"M5 12h14M12 5l7 7-7 7",
+"layers":"M12 2L2 7l10 5 10-5-10-5z M2 17l10 5 10-5 M2 12l10 5 10-5",
+"bar-chart":"M12 20V10M18 20V4M6 20v-4",
+"cpu":"M4 4h16v16H4z M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3",
+"bot":"M12 8V4H8 M2 14h20v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4z M6 14v-4a6 6 0 0 1 12 0v4",
+"sparkles":"M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5L12 3z M5 3l.5 1.5L7 5l-1.5.5L5 7l-.5-1.5L3 5l1.5-.5L5 3z M19 17l.5 1.5L21 19l-1.5.5L19 21l-.5-1.5L17 19l1.5-.5L19 17z",
+"network":"M12 12m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0M5 5m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0M19 5m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0M5 19m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0M19 19m-1 0a1 1 0 1 0 2 0 1 1 0 1 0-2 0M12 11V6M7 7l4 4M17 7l-4 4M7 17l4-4M17 17l-4-4",
+"building":"M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18z M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2 M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2 M10 6h4 M10 10h4 M10 14h4 M10 18h4",
+"briefcase":"M2 7h20v13H2z M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2",
+"message-square":"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z",
+"settings":"M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+"eye":"M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z M12 12m-3 0a3 3 0 1 0 6 0 3 3 0 1 0-6 0",
+"layout":"M3 3h18v18H3z M3 9h18 M9 21V9",
+"package":"M16.5 9.4l-9-5.19 M21 16V8l-9-5.19L3 8v8l9 5.19L21 16z M3.27 6.96L12 12.01l8.73-5.05 M12 22.08V12",
+"phone":"M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z",
+"wrench":"M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z",
+"scale":"M16 3l5 5-5 5 M8 3L3 8l5 5 M12 22V2",
+"file-text":"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z M14 2v6h6 M16 13H8 M16 17H8 M10 9H8",
+"hash":"M4 9h16M4 15h16M10 3L8 21M16 3l-2 18",
+"award":"M12 15l-3.22 2.27.83-3.73L6.5 10.82l3.78-.33L12 7l1.72 3.49 3.78.33-3.11 2.72.83 3.73z M12 15a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M8.21 13.89L7 23l5-3 5 3-1.21-9.12",
+"play":"M5 3l14 9-14 9V3z",
+"alert-triangle":"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z M12 9v4 M12 17h.01",
+"newspaper":"M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2 M18 14h-8 M15 18h-5 M10 6h8v4h-8V6z",
+"book-open":"M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z",
+};
+
+function Ico({name,size=18,color="currentColor"}){
+  const d=svgPaths[name];
+  if(!d)return null;
+  const paths=d.split(/(?=M|m)/);
+  return React.createElement("svg",{width:size,height:size,viewBox:"0 0 24 24",fill:"none",stroke:color,strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round",style:{display:"inline-block",verticalAlign:"middle",flexShrink:0}},
+    paths.map((p,i)=>React.createElement("path",{key:i,d:p.trim()}))
+  );
+}
+
+/* ─── Visual Blocks ─── */
+function Flow({steps,color="#e2c074"}){
+  return React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:"2px",padding:"10px 0"}},
+    steps.map((s,i)=>React.createElement(Fragment,{key:i},
+      React.createElement("div",{style:{display:"flex",alignItems:"center",gap:"10px"}},
+        React.createElement("div",{style:{width:30,height:30,minWidth:30,borderRadius:"50%",background:color+"18",border:"2px solid "+color+"50",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"var(--font-mono)",fontSize:11,fontWeight:700,color}},i+1),
+        React.createElement("div",{style:{flex:1,background:"var(--bg-card)",border:"1px solid var(--border-line)",borderRadius:9,padding:"9px 12px"}},
+          React.createElement("div",{style:{fontFamily:"var(--font-display)",fontSize:12,fontWeight:600,color:"var(--fg-primary)"}},s.t),
+          s.d&&React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:11,color:"var(--fg-secondary)",marginTop:2,lineHeight:1.4}},s.d)
+        )
+      ),
+      i<steps.length-1&&React.createElement("div",{style:{width:2,height:12,background:color+"25",marginLeft:14}})
+    ))
+  );
+}
+
+function Stats({items}){
+  return React.createElement("div",{style:{display:"flex",flexWrap:"wrap",gap:6,padding:"6px 0"}},
+    items.map((s,i)=>React.createElement("div",{key:i,style:{background:(s.c||"#e2c074")+"10",border:"1px solid "+(s.c||"#e2c074")+"28",borderRadius:9,padding:"9px 12px",display:"flex",alignItems:"center",gap:8,flex:"1 1 130px",minWidth:130}},
+      React.createElement("div",{style:{fontFamily:"var(--font-mono)",fontSize:18,fontWeight:800,color:s.c||"#e2c074"}},s.v),
+      React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:10,color:"var(--fg-secondary)",lineHeight:1.3}},s.l)
+    ))
+  );
+}
+
+function Tools({items}){
+  return React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(170px,1fr))",gap:6,padding:"6px 0"}},
+    items.map((t,i)=>React.createElement("div",{key:i,style:{background:"var(--bg-card)",border:"1px solid "+t.c+"28",borderRadius:9,padding:"10px 12px",borderLeft:"3px solid "+t.c}},
+      React.createElement("div",{style:{fontFamily:"var(--font-display)",fontSize:12,fontWeight:700,color:t.c,marginBottom:3}},t.n),
+      React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:10,color:"var(--fg-secondary)",lineHeight:1.4}},t.d)
+    ))
+  );
+}
+
+function Quote({text,author,color="#e2c074"}){
+  return React.createElement("div",{style:{background:color+"08",borderLeft:"3px solid "+color,borderRadius:"0 9px 9px 0",padding:"12px 14px",margin:"6px 0"}},
+    React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:12,color:"var(--fg-primary)",fontStyle:"italic",lineHeight:1.6}},'"'+text+'"'),
+    author&&React.createElement("div",{style:{fontFamily:"var(--font-mono)",fontSize:10,color,marginTop:6}},"— "+author)
+  );
+}
+
+function Warn({text}){
+  return React.createElement("div",{style:{background:"rgba(239,68,68,0.08)",border:"1px solid rgba(239,68,68,0.25)",borderRadius:9,padding:"10px 12px",display:"flex",gap:8,alignItems:"flex-start",margin:"6px 0"}},
+    React.createElement(Ico,{name:"alert-triangle",size:14,color:"#ef4444"}),
+    React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:11,color:"var(--fg-primary)",lineHeight:1.5}},text)
+  );
+}
+
+function Timeline({items}){
+  return React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:5,padding:"6px 0"}},
+    items.map((item,i)=>React.createElement("div",{key:i,style:{display:"flex",alignItems:"center",gap:10,background:"var(--bg-card)",border:"1px solid var(--border-line)",borderRadius:9,padding:"8px 12px",borderLeft:"3px solid "+item.c}},
+      React.createElement("div",{style:{minWidth:38,fontFamily:"var(--font-mono)",fontSize:9,color:"var(--fg-accent)",textAlign:"center"}},
+        React.createElement("div",{style:{fontWeight:700,fontSize:15}},item.num),
+        React.createElement("div",null,item.m)
+      ),
+      React.createElement("div",{style:{flex:1}},
+        React.createElement("div",{style:{fontFamily:"var(--font-display)",fontSize:11,fontWeight:600,color:"var(--fg-primary)"}},item.t),
+        React.createElement("div",{style:{fontFamily:"var(--font-mono)",fontSize:9,color:"var(--fg-muted)",marginTop:1}},item.dt)
+      )
+    ))
+  );
+}
+
+/* ─── News ─── */
+const news=[
+  {src:"Fortune / Morgan Stanley",dt:"Mar 2026",en:"Morgan Stanley warns an AI breakthrough is coming in 2026 — and most of the world isn't ready",pt:"Morgan Stanley alerta que uma revolução de IA está chegando em 2026 — e a maioria do mundo não está preparada",c:"#ef4444",tag:"URGENTE"},
+  {src:"OpenAI",dt:"Mar 2026",en:"GPT-5.4 scores 75% on desktop task simulation — above the human baseline of 72.4%",pt:"GPT-5.4 marca 75% em simulação de tarefas de desktop — acima da linha base humana de 72,4%",c:"#10b981",tag:"BENCHMARK"},
+  {src:"Above The Law",dt:"Fev 2026",en:"Law firm replaced departing associate with AI — costs down 27%, profits up",pt:"Escritório substituiu associado que saiu por IA — custos caíram 27%, lucros subiram",c:"#f59e0b",tag:"CASE REAL"},
+  {src:"McKinsey / Jones Walker",dt:"2026",en:"22% of a lawyer's job can be automated TODAY — 44% of legal tasks are technically automatable",pt:"22% do trabalho de um advogado pode ser automatizado HOJE — 44% das tarefas jurídicas são tecnicamente automatizáveis",c:"#8b5cf6",tag:"DADOS"},
+  {src:"OpenAI Revenue",dt:"2026",en:"OpenAI surpasses $25 billion in annualized revenue — Anthropic approaches $19 billion",pt:"OpenAI ultrapassa US$ 25 bilhões em receita anualizada — Anthropic se aproxima de US$ 19 bilhões",c:"#3b82f6",tag:"MERCADO"},
+  {src:"Towards AI / Karpathy",dt:"Mar 2026",en:"AI agents can now autonomously find improvements to neural network training — the loop is closing",pt:"Agentes de IA encontram melhorias autônomas no treinamento de redes neurais — o ciclo está se fechando",c:"#ec4899",tag:"FRONTIER"},
+  {src:"Harvard / AmLaw 100",dt:"2026",en:"None of the AmLaw 100 firms plan to reduce attorney headcount — but some report 100x productivity gains",pt:"Nenhum dos 100 maiores escritórios dos EUA planeja cortar advogados — mas reportam ganhos de 100x em produtividade",c:"#06b6d4",tag:"INSIGHT"},
+];
+
+function NewsCarousel(){
+  const[idx,setIdx]=useState(0);
+  useEffect(()=>{const t=setInterval(()=>setIdx(i=>(i+1)%news.length),5500);return()=>clearInterval(t)},[]);
+  const n=news[idx];
+  return React.createElement("div",{style:{background:"var(--bg-surface)",border:"1px solid var(--border-line)",borderRadius:12,padding:16,position:"relative",overflow:"hidden",minHeight:145}},
+    React.createElement("div",{style:{position:"absolute",top:0,left:0,right:0,height:3,background:"linear-gradient(90deg,"+n.c+",transparent)"}}),
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6,marginBottom:10}},
+      React.createElement(Ico,{name:"newspaper",size:12,color:n.c}),
+      React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:9,color:n.c,background:n.c+"15",padding:"2px 6px",borderRadius:4,fontWeight:600}},n.tag),
+      React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:9,color:"var(--fg-muted)"}},n.src+" • "+n.dt)
+    ),
+    React.createElement("p",{style:{fontFamily:"var(--font-display)",fontSize:14,fontWeight:600,color:"var(--fg-primary)",lineHeight:1.5,marginBottom:6}},'"'+n.en+'"'),
+    React.createElement("p",{style:{fontFamily:"var(--font-sans)",fontSize:12,color:"var(--fg-accent)",lineHeight:1.5,fontStyle:"italic"}},"→ "+n.pt),
+    React.createElement("div",{style:{display:"flex",gap:4,marginTop:12,justifyContent:"center"}},
+      news.map((_,i)=>React.createElement("button",{key:i,onClick:()=>setIdx(i),style:{width:i===idx?20:5,height:5,borderRadius:3,background:i===idx?n.c:"var(--fg-muted)",border:"none",cursor:"pointer",transition:"all 0.3s"}}))
+    )
+  );
+}
+
+/* ─── Rich Content ─── */
+function Rich({id}){
+  const m={
+    "pilar-estrategia":()=>React.createElement(Flow,{color:"#e2c074",steps:[{t:"Diagnóstico",d:"Avalie onde está hoje"},{t:"Planejamento",d:"Metas claras e mensuráveis"},{t:"Execução com IA",d:"Ferramentas certas para cada etapa"},{t:"Escala",d:"Multiplique resultados"}]}),
+    "pilar-pratica":()=>React.createElement(Fragment,null,React.createElement(Stats,{items:[{v:"0",l:"TCCs necessários",c:"#4ade80"},{v:"1ª",l:"aula já aplicável",c:"#60a5fa"},{v:"9",l:"disciplinas práticas",c:"#e2c074"}]}),React.createElement(Quote,{text:"Construído para quem quer resultados, não diplomas na parede.",author:"Método Super Inteligênc[IA]"})),
+    "pilar-tecnologia":()=>React.createElement(Tools,{items:[{n:"ChatGPT",d:"Canivete suíço da IA",c:"#10b981"},{n:"Claude",d:"Análise profunda + textos",c:"#8b5cf6"},{n:"Perplexity",d:"Pesquisa + concorrência",c:"#3b82f6"},{n:"Gemini",d:"Ecossistema Google",c:"#f59e0b"},{n:"Agentes IA",d:"Automação autônoma",c:"#ec4899"},{n:"+300 Robôs",d:"Biblioteca jurídica IA",c:"#e2c074"}]}),
+    "missao":()=>React.createElement(Flow,{color:"#e2c074",steps:[{t:"Transformar",d:"Prática jurídica com integração estratégica de IA"},{t:"Capacitar",d:"Líderes inovadores que usam IA como alavanca"},{t:"Alavancar",d:"Produtividade e geração de valor"}]}),
+    "visao":()=>React.createElement(Quote,{text:"Formar as referências na nova advocacia 5.0, onde tecnologia, criatividade e conhecimento multidisciplinar se unem para revolucionar o mercado jurídico.",color:"#60a5fa"}),
+    "obj1":()=>React.createElement(Stats,{items:[{v:"IA",l:"Fundamentos teóricos e práticos",c:"#e2c074"},{v:"Direito",l:"Aplicação jurídica real",c:"#60a5fa"},{v:"Negócios",l:"Visão empresarial",c:"#4ade80"}]}),
+    "obj2":()=>React.createElement(Fragment,null,React.createElement(Stats,{items:[{v:"80%",l:"dos resultados vêm de...",c:"#f59e0b"},{v:"20%",l:"das ferramentas certas",c:"#e2c074"}]}),React.createElement(Quote,{text:"Você não precisa dominar 1 milhão de modelos. Precisa dominar os 7 que fazem 80% do trabalho.",color:"#f59e0b"})),
+    "obj3":()=>React.createElement(Flow,{color:"#10b981",steps:[{t:"Identificar",d:"Processos operacionais repetitivos"},{t:"Automatizar",d:"Com IA e agentes especializados"},{t:"Criar Soluções",d:"Estratégicas e escaláveis"}]}),
+    "obj4":()=>React.createElement(Fragment,null,React.createElement(Flow,{color:"#8b5cf6",steps:[{t:"Human in the Loop",d:"Humano no controle — não substituído, mas comandando"},{t:"Gestor de Agentes IA",d:"Múltiplos agentes, cada um especialista"},{t:"Supervisão Estratégica",d:"IA executa, você decide e valida"}]}),React.createElement(Warn,{text:"Advogados que não dominarem gestão de agentes IA serão superados. Essa é a habilidade #1 de 2026."})),
+    "instituicoes":()=>React.createElement(Stats,{items:[{v:"MEC",l:"Certificado reconhecido",c:"#4ade80"},{v:"98%",l:"satisfação Turma 1",c:"#e2c074"},{v:"85%",l:"atingiram objetivos",c:"#60a5fa"},{v:"70%",l:"aumento de renda",c:"#ec4899"}]}),
+    "disciplinas":()=>React.createElement(Timeline,{items:[{num:"1",m:"MAR",t:"IA e Múltiplas Tecnologias",dt:"Abertura: 19/03 → Live: 21/04",c:"#e2c074"},{num:"2",m:"MAI",t:"Gestão Jurídica e Negócios Digitais",dt:"Abertura: 05/05 → Live: 19/05",c:"#60a5fa"},{num:"3",m:"JUN",t:"Eficiência Jurídica + Neurociência",dt:"Abertura: 02/06 → Live: 16/06",c:"#8b5cf6"},{num:"4",m:"JUL",t:"Máquina de Lucro I",dt:"Abertura: 07/07 → Live: 21/07",c:"#10b981"},{num:"5",m:"AGO",t:"Máquina de Lucro II",dt:"Abertura: 01/08 → Live: 18/08",c:"#f59e0b"},{num:"6",m:"SET",t:"Estratégias Avançadas de Escala",dt:"Abertura: 01/09 → Live: 15/09",c:"#ec4899"},{num:"7",m:"OUT",t:"Escritório de Projetos Ágil",dt:"Abertura: 06/10 → Live: 20/10",c:"#06b6d4"},{num:"8",m:"NOV",t:"Compliance Digital",dt:"Abertura: 03/11 → Live: 17/11",c:"#ef4444"},{num:"9",m:"DEZ",t:"Processo Civil Digital",dt:"Abertura: 01/12 → Live: 15/12",c:"#a855f7"}]}),
+    "metodologia":()=>React.createElement(Flow,{color:"#60a5fa",steps:[{t:"Conteúdo Gravado Liberado",d:"~2 semanas antes de cada live"},{t:"Estudo no Seu Ritmo",d:"PDFs, Mapas Mentais, Playbooks, Ferramentas IA"},{t:"Aula ao Vivo — 3ª terça do mês",d:"19h-22h • Aprofundamento prático + networking"},{t:"Atividades Práticas",d:"Aplique imediatamente"},{t:"Avaliação",d:"20 questões, 70% mínimo, sem TCC!"}]}),
+    "oportunidades":()=>React.createElement("div",{style:{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(180px,1fr))",gap:6}},
+      [{t:"Advogado Gestor de IA",d:"Comanda agentes IA",i:"bot",c:"#e2c074"},{t:"Consultor Multidisciplinar",d:"Direito+Tech+Finanças+Gestão",i:"network",c:"#8b5cf6"},{t:"Especialista Automação",d:"Compliance + fluxos auto",i:"shield",c:"#10b981"},{t:"Dev Negócios Inovadores",d:"LegalTechs escaláveis",i:"rocket",c:"#ec4899"}].map((x,i)=>React.createElement("div",{key:i,style:{background:"var(--bg-card)",border:"1px solid "+x.c+"22",borderRadius:10,padding:14,borderTop:"3px solid "+x.c}},
+        React.createElement("div",{style:{width:32,height:32,borderRadius:8,background:x.c+"12",display:"flex",alignItems:"center",justifyContent:"center",marginBottom:8,color:x.c}},React.createElement(Ico,{name:x.i,size:16,color:x.c})),
+        React.createElement("div",{style:{fontFamily:"var(--font-display)",fontSize:12,fontWeight:700,color:x.c,marginBottom:3}},x.t),
+        React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:10,color:"var(--fg-secondary)"}},x.d)
+      ))
+    ),
+    "perfil-profissional":()=>React.createElement("div",{style:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:6}},
+      [{t:"Engenharia de Prompts",d:"O prompt é a nova petição",c:"#e2c074",p:95},{t:"Gestão Multi-Agentes",d:"Maestro da orquestra de IAs",c:"#8b5cf6",p:90},{t:"Visão Multidisciplinar",d:"Direito + Tech + Business",c:"#60a5fa",p:85},{t:"Zona de Excelência",d:"IA no operacional, você na estratégia",c:"#4ade80",p:80}].map((x,i)=>React.createElement("div",{key:i,style:{background:"var(--bg-card)",borderRadius:9,padding:"10px 12px",border:"1px solid var(--border-line)"}},
+        React.createElement("div",{style:{fontFamily:"var(--font-display)",fontSize:11,fontWeight:600,color:x.c,marginBottom:4}},x.t),
+        React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:9,color:"var(--fg-secondary)",marginBottom:6}},x.d),
+        React.createElement("div",{style:{height:4,background:"var(--bg-surface)",borderRadius:2,overflow:"hidden"}},React.createElement("div",{style:{height:"100%",width:x.p+"%",background:x.c,borderRadius:2}}))
+      ))
+    ),
+    "tendencias":()=>React.createElement(NewsCarousel),
+    "tend1":()=>React.createElement(Fragment,null,React.createElement(Stats,{items:[{v:"10x",l:"compute = 2x inteligência (Morgan Stanley)",c:"#ef4444"},{v:"83%",l:"GPT-5.4 supera profissionais (GDPVal)",c:"#10b981"},{v:"75%",l:"em tarefas desktop (>72.4% humano)",c:"#3b82f6"}]}),React.createElement(Quote,{text:"The explosion is arriving faster than almost anyone is prepared for.",author:"Morgan Stanley Report, Mar 2026",color:"#ef4444"}),React.createElement(Quote,{text:"A explosão está chegando mais rápido do que quase todos estão preparados.",color:"#ef4444"})),
+    "tend2":()=>React.createElement(Tools,{items:[{n:"ChatGPT (GPT-5.4)",d:"Agentes autônomos + computer use + 1M tokens",c:"#10b981"},{n:"Claude (Opus 4.6)",d:"Análise profunda, textos, raciocínio jurídico",c:"#8b5cf6"},{n:"Perplexity",d:"Pesquisa com fontes + concorrência",c:"#3b82f6"},{n:"Grok",d:"Tendências e visuais (ecossistema X)",c:"#f59e0b"},{n:"Gemini",d:"Ecossistema Google (YT, Ads, Workspace)",c:"#06b6d4"},{n:"DeepSeek",d:"Alto desempenho, baixo custo",c:"#ec4899"},{n:"Qwen",d:"Multilíngue, grande volume (Alibaba)",c:"#a855f7"}]}),
+    "tend3":()=>React.createElement(Fragment,null,React.createElement(Stats,{items:[{v:"EUA",l:"OpenAI, Anthropic, Google, Meta",c:"#3b82f6"},{v:"China",l:"DeepSeek, Qwen, Baidu",c:"#ef4444"},{v:"Europa",l:"Regulação + Mistral AI",c:"#f59e0b"}]}),React.createElement(Quote,{text:"A competição intensifica a necessidade de adaptação rápida. Novas ferramentas surgem toda semana.",color:"#3b82f6"})),
+    "tend4":()=>React.createElement(Fragment,null,React.createElement(Warn,{text:"McKinsey: 22% automatizável HOJE. 44% tecnicamente automatizável. Escritório SF substituiu associado por IA: custos -27%, lucros subiram."}),React.createElement(Quote,{text:"AI won't make lawyers obsolete, but it will make lawyers who don't use AI obsolete.",author:"Thomas Officer, The Colleges of Law",color:"#f59e0b"}),React.createElement(Quote,{text:"A IA não vai tornar advogados obsoletos, mas vai tornar obsoletos os advogados que não usam IA.",color:"#f59e0b"}),React.createElement(Flow,{color:"#ef4444",steps:[{t:"Advogado Operacional ❌",d:"Tarefas repetitivas — alto risco de substituição"},{t:"Advogado Gestor de IA ✅",d:"Comanda IA, foca em estratégia e cliente"}]})),
+    "aprender-fazendo":()=>React.createElement(Fragment,null,React.createElement(Quote,{text:"Não espere dominar a teoria para começar. O progresso vem da ação.",color:"#4ade80"}),React.createElement(Stats,{items:[{v:"240h",l:"economizadas/ano com IA",c:"#4ade80"},{v:"+20%",l:"mais clientes, mesmo time",c:"#60a5fa"},{v:"2.5h",l:"o que antes levava 2 dias",c:"#f59e0b"}]})),
+    "geracao-valor":()=>React.createElement(Flow,{color:"#4ade80",steps:[{t:"IA faz o operacional",d:"Pesquisa, minutas, prazos, análise"},{t:"Você faz o estratégico",d:"Atendimento, captação, negociação"},{t:"Resultado",d:"Mais clientes + qualidade + lucro"}]}),
+    "proximos-passos":()=>React.createElement(Flow,{color:"#10b981",steps:[{t:"📱 Acesse a Plataforma (AVA)",d:"Já está disponível — explore as primeiras aulas"},{t:"💬 Entre no WhatsApp da Comunidade SIJ",d:"Networking, dúvidas e troca"},{t:"🚀 Disciplina 1 começa HOJE!",d:"IA e Múltiplas Tecnologias → Live: 21/04/2026"}]}),
+  };
+  const C=m[id];return C?React.createElement(C):null;
+}
+
+/* ─── Data ─── */
+const data=[
+  {id:"apresentacao",title:"Apresentação do Programa",icon:"graduation-cap",color:"#e2c074",desc:"O que é o MBA, visão institucional, disciplinas e metodologia",ch:[
+    {id:"o-que",title:"O que é o MBA",icon:"star",ch:[
+      {id:"pilar-estrategia",title:"Estratégia",icon:"target"},
+      {id:"pilar-pratica",title:"Prática",icon:"wrench"},
+      {id:"pilar-tecnologia",title:"Tecnologia",icon:"cpu"},
+    ]},
+    {id:"visao-institucional",title:"Visão Institucional",icon:"building",ch:[
+      {id:"missao",title:"Missão",icon:"target"},
+      {id:"visao",title:"Visão",icon:"eye"},
+      {id:"objetivos",title:"Objetivos do MBA",icon:"check-circle",ch:[
+        {id:"obj1",title:"Fundamentos de IA + Direito",icon:"lightbulb"},
+        {id:"obj2",title:"Lei de Pareto 80/20",icon:"layers"},
+        {id:"obj3",title:"Automatizar + Criar Soluções",icon:"bot"},
+        {id:"obj4",title:"Human in the Loop → Gestor de Agentes IA",icon:"users"},
+      ]},
+    ]},
+    {id:"instituicoes",title:"Anhanguera + Super Inteligênc[IA]",icon:"award"},
+    {id:"disciplinas",title:"9 Disciplinas — Calendário Turma 2",icon:"calendar"},
+    {id:"metodologia",title:"Metodologia",icon:"settings"},
+  ]},
+  {id:"carreira-mercado",title:"Perspectivas de Carreira e Mercado",icon:"trending-up",color:"#60a5fa",desc:"Oportunidades, tendências e manchetes internacionais",ch:[
+    {id:"oportunidades",title:"Oportunidades Profissionais",icon:"briefcase"},
+    {id:"perfil-profissional",title:"Perfil do Profissional 2026",icon:"star"},
+    {id:"tendencias",title:"📰 Manchetes Internacionais",icon:"newspaper",ch:[
+      {id:"tend1",title:"IA Supera Humanos em Tarefas Profissionais",icon:"zap"},
+      {id:"tend2",title:"Ecossistema de IAs — As 7 Principais",icon:"layers"},
+      {id:"tend3",title:"Competição Global: EUA × China × Europa",icon:"globe"},
+      {id:"tend4",title:"⚠️ Alto Risco p/ Advogados Operacionais",icon:"alert-triangle"},
+    ]},
+  ]},
+  {id:"protagonismo",title:"Protagonismo Super Inteligente",icon:"rocket",color:"#4ade80",desc:"Mentalidade, geração de valor e próximos passos",ch:[
+    {id:"aprender-fazendo",title:"Mentalidade: Aprender Fazendo",icon:"play"},
+    {id:"geracao-valor",title:"Geração de Valor com IA",icon:"target"},
+    {id:"proximos-passos",title:"🎯 Seus Próximos Passos",icon:"arrow-right"},
+  ]},
+];
+
+function flat(nodes){let r=[];for(const n of nodes){r.push(n);if(n.ch)r.push(...flat(n.ch));}return r;}
+function ancestors(nodes,id,path=[]){for(const n of nodes){if(n.id===id)return[...path,n.id];if(n.ch){const f=ancestors(n.ch,id,[...path,n.id]);if(f)return f;}}return null;}
+
+/* ─── Node ─── */
+function Node({node,depth=0,exp,toggle,pc}){
+  const open=exp.has(node.id);
+  const hasCh=node.ch&&node.ch.length>0;
+  const col=node.color||pc||"#e2c074";
+  const hasR=!!Rich({id:node.id});
+  const canExp=hasCh||hasR;
+  const fs=[15,13,12,11][Math.min(depth,3)];
+  const fw=[700,600,500,500][Math.min(depth,3)];
+  const pd=[14,11,9,8][Math.min(depth,3)];
+  return React.createElement("div",{style:{animation:"fadeUp 0.35s ease both",animationDelay:depth*25+"ms"}},
+    React.createElement("button",{onClick:()=>canExp&&toggle(node.id),style:{width:"100%",display:"flex",alignItems:"center",gap:9,background:open?"var(--bg-elevated)":"var(--bg-card)",border:"1px solid "+(open?col+"35":"var(--border-line)"),borderRadius:depth===0?13:9,cursor:canExp?"pointer":"default",textAlign:"left",transition:"all 0.25s",padding:pd+"px "+(pd+3)+"px",boxShadow:open?"0 0 18px "+col+"10":"none",fontFamily:depth<=1?"var(--font-display)":"var(--font-sans)",fontSize:fs,fontWeight:fw,color:open?col:"var(--fg-primary)"}},
+      React.createElement("div",{style:{width:depth===0?34:26,height:depth===0?34:26,minWidth:depth===0?34:26,borderRadius:depth===0?9:7,background:col+"12",border:"1px solid "+col+"28",display:"flex",alignItems:"center",justifyContent:"center",color:col}},React.createElement(Ico,{name:node.icon,size:depth===0?17:13,color:col})),
+      React.createElement("span",{style:{flex:1}},node.title),
+      canExp&&React.createElement("div",{style:{color:open?col:"var(--fg-muted)",transition:"transform 0.3s",transform:open?"rotate(180deg)":"rotate(0)"}},React.createElement(Ico,{name:"chevron-down",size:13,color:open?col:"var(--fg-muted)"}))
+    ),
+    depth===0&&node.desc&&!open&&React.createElement("div",{style:{fontSize:10,color:"var(--fg-secondary)",padding:"3px 48px 0",fontFamily:"var(--font-sans)"}},node.desc),
+    React.createElement("div",{style:{maxHeight:open?9000:0,overflow:"hidden",transition:"max-height 0.5s ease,opacity 0.3s",opacity:open?1:0}},
+      open&&React.createElement("div",{style:{marginTop:5,marginLeft:depth===0?12:16,paddingLeft:12,borderLeft:"2px solid "+col+"18",display:"flex",flexDirection:"column",gap:5}},
+        React.createElement(Rich,{id:node.id}),
+        hasCh&&node.ch.map(c=>React.createElement(Node,{key:c.id,node:c,depth:depth+1,exp,toggle,pc:col}))
+      )
+    )
+  );
+}
+
+/* ─── App ─── */
+function App(){
+  const[theme,setTheme]=useState("dark");
+  const[exp,setExp]=useState(new Set());
+  const[sq,setSq]=useState("");
+  const[sf,setSf]=useState(false);
+  useEffect(()=>{document.documentElement.setAttribute("data-theme",theme)},[theme]);
+  const total=useMemo(()=>flat(data).length,[]);
+  const pct=Math.round((exp.size/total)*100);
+  const toggle=useCallback((id)=>{setExp(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);return n})},[]);
+  const results=useMemo(()=>{if(!sq.trim())return[];const q=sq.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");return flat(data).filter(n=>(n.title+" "+(n.desc||"")).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").includes(q)).slice(0,10)},[sq]);
+  const nav=(id)=>{const a=ancestors(data,id);if(a)setExp(p=>{const n=new Set(p);a.forEach(x=>n.add(x));return n});setSq("");setSf(false)};
+
+  return React.createElement(Fragment,null,
+    React.createElement("div",{style:{minHeight:"100vh",background:"var(--bg-page)",position:"relative"}},
+      /* Orbs */
+      React.createElement("div",{style:{position:"fixed",inset:0,pointerEvents:"none",zIndex:0}},
+        React.createElement("div",{style:{position:"absolute",top:"8%",left:"15%",width:350,height:350,borderRadius:"50%",background:"radial-gradient(circle,rgba(226,192,116,0.03) 0%,transparent 70%)",animation:"orbFloat 22s ease-in-out infinite"}}),
+        React.createElement("div",{style:{position:"absolute",bottom:"15%",right:"10%",width:280,height:280,borderRadius:"50%",background:"radial-gradient(circle,rgba(96,165,250,0.02) 0%,transparent 70%)",animation:"orbFloat 28s ease-in-out infinite reverse"}})
+      ),
+      /* Header */
+      React.createElement("header",{style:{position:"sticky",top:0,zIndex:50,background:theme==="dark"?"rgba(3,4,9,0.9)":"rgba(250,250,247,0.9)",backdropFilter:"blur(16px)",borderBottom:"1px solid var(--border-line)",padding:"0 14px",height:48,display:"flex",alignItems:"center"}},
+        React.createElement("div",{style:{maxWidth:840,width:"100%",margin:"0 auto",display:"flex",alignItems:"center",justifyContent:"space-between"}},
+          React.createElement("div",{style:{display:"flex",alignItems:"center",gap:7}},
+            React.createElement("div",{style:{width:28,height:28,borderRadius:7,background:"linear-gradient(135deg,#e2c074,#d4a84e)",display:"flex",alignItems:"center",justifyContent:"center"}},React.createElement(Ico,{name:"graduation-cap",size:14,color:"#030409"})),
+            React.createElement("span",{style:{fontFamily:"var(--font-display)",fontWeight:700,fontSize:12}},"MBA Super Inteligênc[IA]"),
+            React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:8,color:"var(--fg-accent)",background:"var(--bg-accent-subtle)",padding:"2px 5px",borderRadius:3}},"TURMA 2")
+          ),
+          React.createElement("button",{onClick:()=>setTheme(theme==="dark"?"light":"dark"),style:{background:"var(--bg-surface)",border:"1px solid var(--border-line)",borderRadius:7,width:30,height:30,display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:"var(--fg-secondary)"}},
+            React.createElement(Ico,{name:theme==="dark"?"sun":"moon",size:13})
+          )
+        )
+      ),
+      /* Main */
+      React.createElement("main",{style:{maxWidth:840,margin:"0 auto",padding:"24px 14px 50px",position:"relative",zIndex:1}},
+        /* Hero */
+        React.createElement("div",{style:{textAlign:"center",marginBottom:28,animation:"fadeUp 0.5s ease both"}},
+          React.createElement("div",{style:{fontFamily:"var(--font-mono)",fontSize:9,textTransform:"uppercase",letterSpacing:2,color:"var(--fg-accent)",marginBottom:8}},"Aula Inaugural — 19 de Março de 2026"),
+          React.createElement("h1",{style:{fontFamily:"var(--font-display)",fontSize:"clamp(20px,5vw,28px)",fontWeight:800,lineHeight:1.2,marginBottom:14,background:"linear-gradient(135deg,#e2c074,#f0d898,#d4a84e)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}},"MBA Super Inteligênc[IA]"),
+          React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:16,flexWrap:"wrap",marginBottom:12}},
+            [{l:"Blocos",v:"3"},{l:"Tópicos",v:String(total)},{l:"Notícias",v:"7"},{l:"Meses",v:"12"}].map(s=>
+              React.createElement("div",{key:s.l,style:{display:"flex",alignItems:"center",gap:4}},
+                React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:13,fontWeight:700,color:"var(--fg-accent)"}},s.v),
+                React.createElement("span",{style:{fontSize:10,color:"var(--fg-muted)"}},s.l)
+              )
+            )
+          ),
+          React.createElement("div",{style:{maxWidth:320,margin:"0 auto",display:"flex",alignItems:"center",gap:8}},
+            React.createElement("div",{style:{flex:1,height:4,borderRadius:2,background:"var(--bg-surface)",overflow:"hidden"}},React.createElement("div",{style:{height:"100%",borderRadius:2,background:"linear-gradient(90deg,#e2c074,#d4a84e)",width:pct+"%",transition:"width 0.5s"}})),
+            React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:10,color:"var(--fg-accent)"}},pct+"%")
+          )
+        ),
+        /* Search + Controls */
+        React.createElement("div",{style:{display:"flex",gap:5,marginBottom:18,flexWrap:"wrap"}},
+          React.createElement("div",{style:{flex:1,minWidth:160,position:"relative"}},
+            React.createElement("div",{style:{position:"absolute",left:9,top:"50%",transform:"translateY(-50%)",color:"var(--fg-muted)"}},React.createElement(Ico,{name:"search",size:13})),
+            React.createElement("input",{value:sq,onChange:e=>setSq(e.target.value),onFocus:()=>setSf(true),onBlur:()=>setTimeout(()=>setSf(false),200),placeholder:"Buscar...",style:{width:"100%",padding:"8px 28px",background:"var(--bg-surface)",border:"1px solid var(--border-line)",borderRadius:7,color:"var(--fg-primary)",fontFamily:"var(--font-sans)",fontSize:11,outline:"none"}}),
+            sq&&React.createElement("button",{onClick:()=>setSq(""),style:{position:"absolute",right:7,top:"50%",transform:"translateY(-50%)",background:"none",border:"none",color:"var(--fg-muted)",cursor:"pointer"}},React.createElement(Ico,{name:"x",size:11})),
+            sf&&sq&&results.length>0&&React.createElement("div",{style:{position:"absolute",top:"100%",left:0,right:0,marginTop:3,background:"var(--bg-raised)",border:"1px solid var(--border-line)",borderRadius:7,maxHeight:220,overflowY:"auto",zIndex:100,boxShadow:"0 6px 24px rgba(0,0,0,0.3)"}},
+              results.map(r=>React.createElement("button",{key:r.id,onClick:()=>nav(r.id),style:{width:"100%",padding:"7px 10px",display:"flex",alignItems:"center",gap:7,background:"transparent",border:"none",borderBottom:"1px solid var(--border-line)",cursor:"pointer",textAlign:"left",color:"var(--fg-primary)",fontSize:11,fontFamily:"var(--font-sans)"}},
+                React.createElement(Ico,{name:r.icon,size:11}),React.createElement("span",null,r.title)
+              ))
+            )
+          ),
+          React.createElement("button",{onClick:()=>setExp(new Set(flat(data).map(n=>n.id))),style:{padding:"8px 10px",borderRadius:7,background:"var(--bg-accent-subtle)",border:"1px solid var(--border-accent)",color:"var(--fg-accent)",fontFamily:"var(--font-mono)",fontSize:9,cursor:"pointer",textTransform:"uppercase"}},"Expandir"),
+          React.createElement("button",{onClick:()=>setExp(new Set()),style:{padding:"8px 10px",borderRadius:7,background:"var(--bg-surface)",border:"1px solid var(--border-line)",color:"var(--fg-secondary)",fontFamily:"var(--font-mono)",fontSize:9,cursor:"pointer",textTransform:"uppercase"}},"Recolher")
+        ),
+        /* Nodes */
+        React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:8}},
+          data.map((node,i)=>React.createElement("div",{key:node.id,style:{animation:"fadeUp 0.4s ease both",animationDelay:(i+1)*80+"ms"}},React.createElement(Node,{node,depth:0,exp,toggle,pc:node.color})))
+        ),
+        /* Footer */
+        React.createElement("footer",{style:{marginTop:40,padding:"16px 0",borderTop:"1px solid var(--border-line)",textAlign:"center"}},
+          React.createElement("p",{style:{fontFamily:"var(--font-mono)",fontSize:9,color:"var(--fg-muted)"}},"MBA Super Inteligênc[IA] — Turma 2 | 2026 | Anhanguera + SI | MEC")
+        )
+      )
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+</script>
+</body>
+</html>
