@@ -188,6 +188,25 @@ function NewsCarousel(){
   );
 }
 
+/* ─── News Link Card ─── */
+function NewsLink({title,titlePt,source,date,url,tag,color}){
+  return React.createElement("a",{href:url,target:"_blank",rel:"noopener noreferrer",style:{display:"block",background:"var(--bg-card)",border:"1px solid "+color+"22",borderRadius:10,padding:"12px 14px",borderLeft:"3px solid "+color,textDecoration:"none",transition:"all 0.2s",marginBottom:4}},
+    React.createElement("div",{style:{display:"flex",alignItems:"center",gap:6,marginBottom:6}},
+      React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:8,color,background:color+"15",padding:"2px 6px",borderRadius:3,fontWeight:600}},tag),
+      React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:8,color:"var(--fg-muted)"}},source+" · "+date)
+    ),
+    React.createElement("div",{style:{fontFamily:"var(--font-display)",fontSize:12,fontWeight:600,color:"var(--fg-primary)",lineHeight:1.4,marginBottom:4}},title),
+    titlePt&&React.createElement("div",{style:{fontFamily:"var(--font-sans)",fontSize:11,color:"var(--fg-accent)",fontStyle:"italic",lineHeight:1.4}},"→ "+titlePt),
+    React.createElement("div",{style:{fontFamily:"var(--font-mono)",fontSize:9,color:color,marginTop:6,display:"flex",alignItems:"center",gap:4}},"Ler matéria completa →")
+  );
+}
+
+function NewsList({items}){
+  return React.createElement("div",{style:{display:"flex",flexDirection:"column",gap:5,padding:"6px 0"}},
+    items.map((n,i)=>React.createElement(NewsLink,Object.assign({key:i},n)))
+  );
+}
+
 /* ─── Rich Content ─── */
 function Rich({id}){
   const m={
@@ -225,6 +244,34 @@ function Rich({id}){
     "aprender-fazendo":()=>React.createElement(Fragment,null,React.createElement(Quote,{text:"Não espere dominar a teoria para começar. O progresso vem da ação.",color:"#4ade80"}),React.createElement(Stats,{items:[{v:"240h",l:"economizadas/ano com IA",c:"#4ade80"},{v:"+20%",l:"mais clientes, mesmo time",c:"#60a5fa"},{v:"2.5h",l:"o que antes levava 2 dias",c:"#f59e0b"}]})),
     "geracao-valor":()=>React.createElement(Flow,{color:"#4ade80",steps:[{t:"IA faz o operacional",d:"Pesquisa, minutas, prazos, análise"},{t:"Você faz o estratégico",d:"Atendimento, captação, negociação"},{t:"Resultado",d:"Mais clientes + qualidade + lucro"}]}),
     "proximos-passos":()=>React.createElement(Flow,{color:"#10b981",steps:[{t:"📱 Acesse a Plataforma (AVA)",d:"Já está disponível — explore as primeiras aulas"},{t:"💬 Entre no WhatsApp da Comunidade SIJ",d:"Networking, dúvidas e troca"},{t:"🚀 Disciplina 1 começa HOJE!",d:"IA e Múltiplas Tecnologias → Live: 21/04/2026"}]}),
+    "noticias":()=>React.createElement(Fragment,null,
+      React.createElement(Stats,{items:[{v:"17",l:"notícias selecionadas",c:"#ef4444"},{v:"7",l:"fontes internacionais",c:"#3b82f6"},{v:"5",l:"fontes brasileiras",c:"#4ade80"}]}),
+      React.createElement(Quote,{text:"As notícias abaixo são reais, publicadas entre janeiro e março de 2026 pelas maiores publicações do mundo. Clique em qualquer uma para ler a matéria completa.",color:"#e2c074"})
+    ),
+    "news-global":()=>React.createElement(NewsList,{items:[
+      {title:"Morgan Stanley warns an AI breakthrough is coming in 2026 — and most of the world isn't ready",titlePt:"Morgan Stanley alerta que revolução de IA está chegando em 2026 — e a maioria do mundo não está preparada",source:"Fortune",date:"Mar 2026",url:"https://fortune.com/2026/03/13/elon-musk-morgan-stanley-ai-leap-2026/",tag:"URGENTE",color:"#ef4444"},
+      {title:"Anthropic mapped out which jobs AI could replace. A 'Great Recession for white-collar workers' is possible",titlePt:"Anthropic mapeou quais empregos a IA pode substituir. Uma 'Grande Recessão para white-collar' é possível",source:"Fortune",date:"Mar 2026",url:"https://fortune.com/2026/03/06/ai-job-losses-report-anthropic-research-great-recession-for-white-collar-workers/",tag:"PESQUISA",color:"#8b5cf6"},
+      {title:"Politicians are starting to pay attention to the plight of white-collar workers",titlePt:"Políticos começam a prestar atenção no deslocamento de profissionais white-collar",source:"NBC News",date:"Mar 2026",url:"https://www.nbcnews.com/politics/elections/politicians-attention-white-collar-workers-rcna259447",tag:"POLÍTICA",color:"#06b6d4"},
+      {title:"GPT-5.4: Autonomous AI Workflow Automation — scores above human baseline",titlePt:"GPT-5.4: Automação autônoma de workflows — supera a linha base humana",source:"OpenAI",date:"Mar 2026",url:"https://openai.com/index/introducing-gpt-5-4/",tag:"FRONTIER",color:"#10b981"},
+      {title:"Companies are laying off workers because of AI's potential — not its performance",titlePt:"Empresas demitem com base no potencial da IA — não na performance atual",source:"Harvard Business Review",date:"Fev 2026",url:"https://hbr.org/2026/01/companies-are-laying-off-workers-because-of-ais-potential-not-its-performance",tag:"HBR",color:"#f59e0b"},
+      {title:"45,000 tech layoffs by March 2026 — 20% explicitly linked to AI and automation",titlePt:"45 mil demissões em tech até março de 2026 — 20% explicitamente ligadas a IA",source:"FinFlowMax",date:"Mar 2026",url:"https://finflowmax.com/ai-white-collar-job-loss-2026/",tag:"DADOS",color:"#ec4899"},
+      {title:"AI isn't causing a jobs-pocalypse. At least, not yet",titlePt:"IA não está causando um apocalipse de empregos. Pelo menos, ainda não",source:"CNN Business",date:"Mar 2026",url:"https://www.cnn.com/2026/03/02/business/ai-tech-jobs-layoffs",tag:"ANÁLISE",color:"#60a5fa"},
+    ]}),
+    "news-legal":()=>React.createElement(NewsList,{items:[
+      {title:"Law firm replaced departing associate with AI — costs down 27%, profits up",titlePt:"Escritório substituiu associado que saiu por IA — custos -27%, lucros subiram",source:"Above The Law",date:"Fev 2026",url:"https://abovethelaw.com/2026/02/instead-of-replacing-departing-associate-firm-leaned-on-ai-costs-are-down-27-percent-and-profits-are-up/",tag:"CASE REAL",color:"#f59e0b"},
+      {title:"AI Legal Tech Market hits inflection point — $6.4B projection by 2028",titlePt:"Mercado de legal tech atinge ponto de inflexão — projeção de US$ 6,4 bi até 2028",source:"Legalweek 2026",date:"Mar 2026",url:"https://blockchain.news/news/ai-legal-tech-market-inflection-point-client-demands-2026",tag:"MERCADO",color:"#3b82f6"},
+      {title:"Ten AI Predictions for 2026: Legal AI moves from 'interesting tool' to 'operational infrastructure'",titlePt:"10 Previsões de IA 2026: IA jurídica sai de 'ferramenta interessante' para 'infraestrutura operacional'",source:"National Law Review",date:"2026",url:"https://natlawreview.com/article/ten-ai-predictions-2026-what-leading-analysts-say-legal-teams-should-expect",tag:"PREVISÕES",color:"#8b5cf6"},
+      {title:"None of the AmLaw 100 firms plan to reduce attorney headcount — but report 100x productivity gains",titlePt:"Nenhum dos 100 maiores escritórios dos EUA planeja cortar advogados — mas reportam 100x de produtividade",source:"Harvard Law",date:"2026",url:"https://www.joneswalker.com/en/insights/blogs/ai-law-blog/ten-ai-predictions-for-2026-what-leading-analysts-say-legal-teams-should-expect.html",tag:"INSIGHT",color:"#06b6d4"},
+      {title:"Legalweek 2026: The AI Bubble Literally Pops — Harvey raises massive funding",titlePt:"Legalweek 2026: A bolha de IA literalmente estoura — Harvey e Legora captam centenas de milhões",source:"Above The Law",date:"Mar 2026",url:"https://abovethelaw.com/2026/03/legalweek-2026-the-ai-bubble-literally-pops/",tag:"EVENTO",color:"#ec4899"},
+      {title:"85 Predictions for AI and the Law in 2026",titlePt:"85 Previsões para IA e o Direito em 2026 — compilado com líderes da indústria",source:"National Law Review",date:"Jan 2026",url:"https://natlawreview.com/article/85-predictions-ai-and-law-2026",tag:"COMPILADO",color:"#e2c074"},
+    ]}),
+    "news-brasil":()=>React.createElement(NewsList,{items:[
+      {title:"O custo regulatório do Marco Legal da IA para o Judiciário",titlePt:"Brasil entra em regime jurídico de IA estruturado — impactos em responsabilidade civil e mercado",source:"Conjur",date:"Fev 2026",url:"https://www.conjur.com.br/2026-fev-06/responsabilidade-civil-e-custo-regulatorio-no-marco-legal-da-ia/",tag:"REGULAÇÃO",color:"#4ade80"},
+      {title:"Inteligência Artificial no Setor Jurídico: desafios, usos e segurança em 2026",titlePt:"80 milhões de processos ativos, 39 milhões de novas demandas/ano — IA como necessidade",source:"AdvTechPro",date:"Mar 2026",url:"https://blog.advtechpro.ai/inteligencia-artificial-no-setor-juridico-desafios-usos-e-seguranca-em-2026/",tag:"ANÁLISE",color:"#3b82f6"},
+      {title:"Inteligência artificial acelera rotinas da prática jurídica no Brasil",titlePt:"Mais de 55% dos advogados brasileiros já usam IA no dia a dia",source:"O Tempo",date:"Jan 2026",url:"https://www.otempo.com.br/comportamento/2026/1/20/inteligencia-artificial-acelera-rotinas-da-pratica-juridica-no-brasil",tag:"ADOÇÃO",color:"#e2c074"},
+      {title:"Tendências do setor jurídico para 2026: agentes de IA como copilotos",titlePt:"Agentes de IA se consolidam como copilotos — 'vencerá quem melhor souber extrair insights'",source:"TOTVS JuriTIs",date:"Dez 2025",url:"https://www.totvs.com/blog/gestao-juridica/tendencias-juridico/",tag:"TENDÊNCIA",color:"#8b5cf6"},
+      {title:"Governança da Inteligência Artificial em 2026",titlePt:"Governança de IA é essencial para reduzir riscos jurídicos e garantir conformidade",source:"LBCA",date:"Fev 2026",url:"https://lbca.com.br/governanca-da-inteligencia-artificial-em-2026/",tag:"GOVERNANÇA",color:"#f59e0b"},
+    ]}),
   };
   const C=m[id];return C?React.createElement(C):null;
 }
@@ -265,6 +312,11 @@ const data=[
     {id:"aprender-fazendo",title:"Mentalidade: Aprender Fazendo",icon:"play"},
     {id:"geracao-valor",title:"Geração de Valor com IA",icon:"target"},
     {id:"proximos-passos",title:"🎯 Seus Próximos Passos",icon:"arrow-right"},
+  ]},
+  {id:"noticias",title:"📰 Notícias: IA Transformando o Mundo",icon:"newspaper",color:"#ef4444",desc:"17 notícias reais de 2026 com links — impacto global, mercado jurídico e Brasil",ch:[
+    {id:"news-global",title:"Impacto Global da IA (7 notícias)",icon:"globe"},
+    {id:"news-legal",title:"Mercado Jurídico Internacional (6 notícias)",icon:"scale"},
+    {id:"news-brasil",title:"Brasil: Mercado Jurídico e IA (5 notícias)",icon:"building"},
   ]},
 ];
 
@@ -337,7 +389,7 @@ function App(){
           React.createElement("div",{style:{fontFamily:"var(--font-mono)",fontSize:9,textTransform:"uppercase",letterSpacing:2,color:"var(--fg-accent)",marginBottom:8}},"Aula Inaugural — 19 de Março de 2026"),
           React.createElement("h1",{style:{fontFamily:"var(--font-display)",fontSize:"clamp(20px,5vw,28px)",fontWeight:800,lineHeight:1.2,marginBottom:14,background:"linear-gradient(135deg,#e2c074,#f0d898,#d4a84e)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent"}},"MBA Super Inteligênc[IA]"),
           React.createElement("div",{style:{display:"flex",justifyContent:"center",gap:16,flexWrap:"wrap",marginBottom:12}},
-            [{l:"Blocos",v:"3"},{l:"Tópicos",v:String(total)},{l:"Notícias",v:"7"},{l:"Meses",v:"12"}].map(s=>
+            [{l:"Blocos",v:"4"},{l:"Tópicos",v:String(total)},{l:"Notícias",v:"17"},{l:"Meses",v:"12"}].map(s=>
               React.createElement("div",{key:s.l,style:{display:"flex",alignItems:"center",gap:4}},
                 React.createElement("span",{style:{fontFamily:"var(--font-mono)",fontSize:13,fontWeight:700,color:"var(--fg-accent)"}},s.v),
                 React.createElement("span",{style:{fontSize:10,color:"var(--fg-muted)"}},s.l)
